@@ -8,7 +8,7 @@ int N = 3;
 int M = 3;
 int MAX_MOVES = 4;
 
-float max_reward(int next_x, int next_y){
+/*float max_reward(int next_x, int next_y, float (&qtable)[N][M][MAX_MOVES]){
     float max_v = -1;
     float tmp;
     for(int k=0; k<MAX_MOVES; k++){
@@ -18,7 +18,7 @@ float max_reward(int next_x, int next_y){
             }
         }
     return max_v;
-}
+}*/
 
 int main (){
     
@@ -147,7 +147,13 @@ int main (){
                 }
             }
         }
-        learning = (1-alfa)*qtable[current_x][current_y][action_k]+alfa*(grid[next_x][next_y]+beta*max_reward(next_x,next_y));
+        float max_v = -1.0f;
+        for (int k = 0; k < MAX_MOVES; k++) {
+            if (qtable[next_x][next_y][k] > max_v) {
+                max_v = qtable[next_x][next_y][k];
+            }
+        }
+        learning = (1-alfa)*qtable[current_x][current_y][action_k]+alfa*(grid[next_x][next_y]+beta*max_v);
     
     }
     cout << "GRID" << endl;
