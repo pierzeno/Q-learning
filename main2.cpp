@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+#include <random>
 #include <map>
 #include <iomanip>
 using namespace std;
@@ -29,6 +30,10 @@ int main (){
     // up, down, left, right
     //int max_moves = 4;
     int num_cells = N*M;
+
+    random_device rd;  //generatore numeri casuali
+    mt19937 gen(rd());
+    uniform_int_distribution<int> dist(0, 1);
     //int qtable[N][M];
     //map<std::pair<pair<int, int>, int>, float> qtable;
     float qtable[N][M][MAX_MOVES];
@@ -118,44 +123,15 @@ int main (){
     bool end = false;
     int current_x = 0;
     int current_y = 0;
-    int max_r = -1;
+    int max_r;
     float current_k;
     int action_k;
     int next_x = current_x;
     int next_y = current_y;
     float learning;
-    while(end != true){
-        for(int k=0; k<MAX_MOVES; k++){
-            current_k = qtable[current_x][current_y][k];
-            //k: 0 up, 1 down, 2 left, 3 right
-            if(current_k > max_r){
-                if(k==0){ //up
-                    action_k=k;
-                    next_x++;
-                }
-                if(k==1){ //down
-                    action_k=k;
-                    next_x--;
-                }
-                if(k==2){ //left
-                    action_k=k;
-                    next_y--;
-                }
-                if(k==3){ //right
-                    action_k=k;
-                    next_y++;
-                }
-            }
-        }
-        float max_v = -1.0f;
-        for (int k = 0; k < MAX_MOVES; k++) {
-            if (qtable[next_x][next_y][k] > max_v) {
-                max_v = qtable[next_x][next_y][k];
-            }
-        }
-        learning = (1-alfa)*qtable[current_x][current_y][action_k]+alfa*(grid[next_x][next_y]+beta*max_v);
-    
-    }
+
+    //-----------------------------------
+    cout << "INITIAL" << endl;
     cout << "GRID" << endl;
     for(int i=0; i<N; i++){
         for(int j=0; j<M; j++){
@@ -173,6 +149,103 @@ int main (){
             cout << endl;
         }
     }
+    //-----------------------------------
+    int contatore = 0;
+    int k_equal_action_req;
+    while(end!=true){
+        contatore++;
+        cout << "(" << current_x << "," << current_y << ")" << endl;
+        //for(int k=0; k<MAX_MOVES; k++){
+        int k=0;
+        bool flag_moves = false;
+        /*max_r = -1;
+        while(k<MAX_MOVES){
+        //while(flag_moves!=true){
+            //k: 0 up, 1 down, 2 left, 3 right
+            current_k = qtable[current_x][current_y][k];
+            if(current_k >= max_r){
+                max_r = current_k;
+                //if(k==0 && qtable[tmp_next_x--][current_y][k]!=-1 && tmp_next_x-- >= 0 && tmp_next_x-- <= 3){ //up
+                if(k==0){ //up
+                    action_k=k;
+                    next_x--;
+                    //flag_moves = true;
+                }
+                if(k==1){ //down
+                    action_k=k;
+                    next_x++;
+                    //flag_moves = true;
+                }
+                if(k==2){ //left
+                    action_k=k;
+                    next_y--;
+                    //flag_moves = true;
+                }
+                if(k==3){ //right
+                    action_k=k;
+                    next_y++;
+                    cout << "next_y = " << next_y << endl;
+                    //flag_moves = true;
+                }
+            }
+            k++;
+        }*/
+        max_r = -1;
+        action_k = -1;
+        while (k < MAX_MOVES) {
+            current_k = qtable[current_x][current_y][k];
+            if (current_k == max_r) {
+                action_k = (dist(gen) == 0) ? k : action_k; //choose randomly between action_k and k
+            } else if (current_k > max_r) {
+                max_r = current_k;
+                action_k = k; 
+            }
+            k++;
+        }
 
+        switch (action_k) {
+            case 0: next_x = current_x - 1; break; // Up
+            case 1: next_x = current_x + 1; break; // Down
+            case 2: next_y = current_y - 1; break; // Left
+            case 3: next_y = current_y + 1; cout << "next_y = " << next_y << endl; break; // Right
+        }
+        //}
+        float max_v = -1.0f;
+        for (int z = 0; z < MAX_MOVES; z++) {
+            if (qtable[next_x][next_y][z] > max_v) {
+                max_v = qtable[next_x][next_y][z];
+            }
+        }
+        learning = (1-alfa)*qtable[current_x][current_y][action_k]+alfa*(grid[next_x][next_y]+beta*max_v);
+        qtable[current_x][current_y][action_k] = learning ;
+
+        if(next_x == N-1 && next_y == M-1){
+            end = true;
+        }else{
+            current_x = next_x;
+            current_y = next_y;
+        }
+        cout << "end = " << end << endl;
+    }
+    //-----------------------------------
+    cout << "INITIAL" << endl;
+    cout << "GRID" << endl;
+    for(int i=0; i<N; i++){
+        for(int j=0; j<M; j++){
+            cout << "| " << setw(3) << grid[i][j] << " | ";
+        }
+        cout << endl;
+    }
+
+    cout << "Q-TABLE" << endl;
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < M; ++j) {
+            for(int k=0; k<MAX_MOVES; k++){
+                cout << "| " << setw(3) << qtable[i][j][k] << " | ";
+            }
+            cout << endl;
+        }
+    }
+    //-----------------------------------
     return 0;
 }
