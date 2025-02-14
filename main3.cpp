@@ -146,16 +146,14 @@ void runEpisode(){
     int contatore = 0;
     int k_equal_action_req;
 
-    int constraint_of_bettina = 0;
-    while(end!=true && constraint_of_bettina < 50){
+    while(end!=true){
         contatore++;
         cout << "(" << current_x << "," << current_y << ") ";
-        //for(int k=0; k<MAX_MOVES; k++){
         int k=0;
         bool flag_moves = false;
         
         max_r = -1;
-        action_k = -1; /////////////////ATTENTION MAYBEEEEEEE HEEEEREEEEEEEEEEEEE ----------------
+        action_k = -1;
         while (k < MAX_MOVES) {
             current_k = qtable[current_x][current_y][k];
             if (current_k > max_r) {
@@ -172,10 +170,10 @@ void runEpisode(){
         }
 
         switch (action_k) {
-            case 0: next_x = current_x - 1; cout << "up" << endl; break; // Up
-            case 1: next_x = current_x + 1; cout << "Down" << endl; break; // Down
-            case 2: next_y = current_y - 1; cout << "Left" << endl; break; // Left
-            case 3: next_y = current_y + 1; cout << "Right" << endl; break; // Right
+            case 0: next_x = current_x - 1; break; // Up
+            case 1: next_x = current_x + 1; break; // Down
+            case 2: next_y = current_y - 1; break; // Left
+            case 3: next_y = current_y + 1; break; // Right
         }
         
         float max_v = -1.0f;
@@ -184,7 +182,6 @@ void runEpisode(){
                 max_v = qtable[next_x][next_y][z];
             }
         }
-        cout << "max_v" << max_v << endl;
         learning = (1-LR)*qtable[current_x][current_y][action_k]+LR*(grid[next_x][next_y]+DF*max_v);
         qtable[current_x][current_y][action_k] = learning ;
 
@@ -195,7 +192,6 @@ void runEpisode(){
             current_x = next_x;
             current_y = next_y;
         }
-        constraint_of_bettina++;
     }
 }
 
