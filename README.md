@@ -54,7 +54,24 @@ The program will present a menu with the following options:
 4. **Goal Reached**: When the agent reaches the goal, the episode ends, and the Q-table has learned the optimal path.
 
 ## Q-learning
-The algorithm used in this program to teaches to the agent the action that it might take is the [Q-learning](https://en.wikipedia.org/wiki/Q-learning).
+The algorithm used in this program to teaches to the agent the action that it might take is the Q-learning.
+
+*Q-learning is a model-free reinforcement learning algorithm that teaches an agent to assign values to each action it might take, conditioned on the agent being in a particular state. It does not require a model of the environment (hence "model-free"), and it can handle problems with stochastic transitions and rewards without requiring adaptations*.
+
+The Q-learning algorithm updates the Q-values based on the following formula:
+
+$$ Q(s, a) = (1 - \alpha) \cdot Q(s, a) + \alpha \cdot \left( r + \gamma \cdot \max_{a'} Q(s', a') \right) $$
+
+Where:
+- **Q(s, a)** is the current Q-value of taking action **a** in state **s**.
+- **α** (alpha) is the **learning rate**, determining how much new information overrides the old.
+- **r** is the **reward** received after taking action **a** in state **s**.
+- **γ** (gamma) is the **discount factor**, which represents the importance of future rewards.
+- **maxₐ' Q(s', a')** is the maximum Q-value for the next state **s'** over all possible actions **a'**.
+
+### Explanation:
+- The formula calculates the updated Q-value for a state-action pair **(s, a)**.
+- The Q-value is updated as a weighted sum of the old Q-value and the new information from the reward and the future best Q-value.
 
 ## Changing Grid Dimensions
 
