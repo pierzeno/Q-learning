@@ -4,7 +4,7 @@
 
 This program implements a simple Q-learning agent that learns to navigate a generic grid (on default the grid is a 3x3, but you can change some parameter on the code in order to change the dimensions of the grid [here](#changing-grid-dimensions)). The goal of the agent is to start at the top-left corner of the grid (position `(0, 0)`) and reach the bottom-right corner (position `(N-1, M-1)`), where the agent receives a reward.
 
-The program uses Q-learning to decide on the best actions (up, down, left, right) at each step to maximize the accumulated reward. The Q-table is updated after each move, based on the agent's experiences.
+The program uses [Q-learning](#Q-learning) to decide on the best actions (up, down, left, right) at each step to maximize the accumulated reward. The Q-table is updated after each move, based on the agent's experiences.
 
 ## Key Features
 
@@ -52,6 +52,9 @@ The program will present a menu with the following options:
 2. **Learning Process**: The agent starts at `(0, 0)` and explores the grid using Q-learning. The Q-table is updated at each step to reflect the best learned actions.
 3. **Exploration**: The agent tries various actions (up, down, left, right) and learns from its experiences, improving its policy over time.
 4. **Goal Reached**: When the agent reaches the goal, the episode ends, and the Q-table has learned the optimal path.
+
+## Q-learning
+The algorithm used in this program to teaches to the agent the action that it might take is the [Q-learning](https://en.wikipedia.org/wiki/Q-learning).
 
 ## Changing Grid Dimensions
 
