@@ -1,32 +1,13 @@
-# Ignore object files, compiled binaries, and debug information
-*.o
-*.a
-*.so
-*.out
-*.exe
-*.dSYM
-*.obj
+.vscode/
 main
-
-# Ignore directories
+*.o
 build/
 bin/
-Debug/
-Release/
-
-# Ignore IDE specific files
-.vscode/
-.idea/
-
-# Ignore CMake build files
-CMakeCache.txt
-CMakeFiles/
-Makefile
-cmake_install.cmake
-*.cmake
-
-# Ignore temporary files from your editor or OS
 *~
 *.swp
-.DS_Store
-Thumbs.db
+*.swo
+.idea/
+*.user
+*.userosscache
+*.suo
+*.log
